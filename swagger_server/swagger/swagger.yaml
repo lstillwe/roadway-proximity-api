@@ -1,0 +1,116 @@
+---
+swagger: "2.0"
+info:
+  description: "This API, given a decimal formatted latitude and longitude (assumed\
+    \ WGS84), |\nreturns the distance (in meters) to the nearest primary or secondary\
+    \ road\n"
+  version: "1.0.0"
+  title: "Roadway Proximity API"
+  contact:
+    name: "Lisa Stillwell"
+    email: "lisa@renci.org"
+  license:
+    name: "MIT"
+    url: "http://opensource.org/licenses/MIT"
+host: "bdt-proximity.renci.org"
+basePath: "/roadway_proximity_api/v1"
+schemes:
+- "https"
+paths:
+  /distance:
+    get:
+      summary: "retrieves distance"
+      description: "By passing in the appropriate options, you can get the distance\
+        \ to the closest roadway\n"
+      operationId: "get_distance"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "latitude"
+        in: "query"
+        description: "latitude of point from which to retrieve the closest distance\
+          \ to a roadway (decimal format - WGS84 assumed)"
+        required: true
+        type: "number"
+        format: "double"
+      - name: "longitude"
+        in: "query"
+        description: "longitude of point from which to retrieve the closest distance\
+          \ to a roadway (decimal format - WGS84 assumed)"
+        required: true
+        type: "number"
+        format: "double"
+      - name: "limit_distance"
+        in: "query"
+        description: "limit the search distance - provide number in meters"
+        required: false
+        type: "number"
+        default: 500
+        format: "double"
+      responses:
+        200:
+          description: "search results matching criteria"
+          schema:
+            $ref: "#/definitions/RoadwayData"
+        400:
+          description: "bad input parameter"
+      x-swagger-router-controller: "swagger_server.controllers.default_controller"
+definitions:
+  RoadwayData:
+    type: "object"
+    required:
+    - "distance"
+    - "latitude"
+    - "longitude"
+    - "name"
+    - "type"
+    properties:
+      name:
+        type: "string"
+        example: "Main Street"
+      type:
+        type: "string"
+        example: "primary"
+      latitude:
+        type: "number"
+        format: "double"
+        example: 37.2000000000000028421709430404007434844970703125
+      longitude:
+        type: "number"
+        format: "double"
+        example: -79.33400000000000318323145620524883270263671875
+      distance:
+        type: "number"
+        format: "double"
+        example: 251.000765000000001236912794411182403564453125
+    example:
+      distance: 251.000765000000001236912794411182403564453125
+      latitude: 37.2000000000000028421709430404007434844970703125
+      name: "Main Street"
+      type: "primary"
+      longitude: -79.33400000000000318323145620524883270263671875
+parameters:
+  latitude:
+    name: "latitude"
+    in: "query"
+    description: "latitude of point from which to retrieve the closest distance to\
+      \ a roadway (decimal format - WGS84 assumed)"
+    required: true
+    type: "number"
+    format: "double"
+  longitude:
+    name: "longitude"
+    in: "query"
+    description: "longitude of point from which to retrieve the closest distance to\
+      \ a roadway (decimal format - WGS84 assumed)"
+    required: true
+    type: "number"
+    format: "double"
+  limit_distance:
+    name: "limit_distance"
+    in: "query"
+    description: "limit the search distance - provide number in meters"
+    required: false
+    type: "number"
+    default: 500
+    format: "double"
