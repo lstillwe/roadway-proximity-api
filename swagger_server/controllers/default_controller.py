@@ -3,7 +3,7 @@
 import sys
 
 #from swagger_server.models.roadway_data import RoadwayData  # noqa: E501
-from swagger_server.models.models import TlRoad  # noqa: E501
+from swagger_server.models.models import Hpms2016MajorRoad  # noqa: E501
 from swagger_server import util
 
 from configparser import ConfigParser
@@ -41,8 +41,8 @@ def get_distance(latitude, longitude, limit_distance=None):  # noqa: E501
         #if not session.query(exists().where(ExposureList.variable == var)).scalar():
             #return 'Invalid parameter', 400, {'x-error': 'Invalid parameter: variable'}
     #session.close()
-    from swagger_server.proximities.tl_roads import TLRoadProximity
-    roads = TLRoadProximity()
+    from swagger_server.proximities.hpms2016 import Hpms2016Proximity
+    roads = Hpms2016Proximity()
     kwargs = locals()
     data = roads.get_values(**kwargs)
 

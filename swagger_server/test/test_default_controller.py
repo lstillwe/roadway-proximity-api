@@ -21,7 +21,7 @@ class TestDefaultController(BaseTestCase):
                         ('longitude', 1.2),
                         ('limit_distance', 500.0)]
         response = self.client.open(
-            '/proximity_api/roadway_proximity_aos2/1.0.0/distance',
+            '/roadway_proximity_api/v1/distance',
             method='GET',
             query_string=query_string)
         self.assert200(response,

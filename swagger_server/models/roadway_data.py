@@ -15,41 +15,56 @@ class RoadwayData(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, name: str=None, type: str=None, latitude: float=None, longitude: float=None, distance: float=None):  # noqa: E501
+    def __init__(self, name: str=None, roadtype: str=None, latitude: float=None, longitude: float=None, distance: float=None, aadt: float=None, speed: float=None, through_lanes: float=None):  # noqa: E501
         """RoadwayData - a model defined in Swagger
 
         :param name: The name of this RoadwayData.  # noqa: E501
         :type name: str
-        :param type: The type of this RoadwayData.  # noqa: E501
-        :type type: str
+        :param roadtype: The roadtype of this RoadwayData.  # noqa: E501
+        :type roadtype: str
         :param latitude: The latitude of this RoadwayData.  # noqa: E501
         :type latitude: float
         :param longitude: The longitude of this RoadwayData.  # noqa: E501
         :type longitude: float
         :param distance: The distance of this RoadwayData.  # noqa: E501
         :type distance: float
+        :param aadt: The aadt of this RoadwayData.  # noqa: E501
+        :type aadt: float
+        :param speed: The speed of this RoadwayData.  # noqa: E501
+        :type speed: float
+        :param through_lanes: The through_lanes of this RoadwayData.  # noqa: E501
+        :type through_lanes: float
         """
         self.swagger_types = {
             'name': str,
-            'type': str,
+            'roadtype': str,
             'latitude': float,
             'longitude': float,
-            'distance': float
+            'distance': float,
+            'aadt': float,
+            'speed': float,
+            'through_lanes': float
         }
 
         self.attribute_map = {
             'name': 'name',
-            'type': 'type',
+            'roadtype': 'roadtype',
             'latitude': 'latitude',
             'longitude': 'longitude',
-            'distance': 'distance'
+            'distance': 'distance',
+            'aadt': 'aadt',
+            'speed': 'speed',
+            'through_lanes': 'through_lanes'
         }
 
         self._name = name
-        self._type = type
+        self._roadtype = roadtype
         self._latitude = latitude
         self._longitude = longitude
         self._distance = distance
+        self._aadt = aadt
+        self._speed = speed
+        self._through_lanes = through_lanes
 
     @classmethod
     def from_dict(cls, dikt) -> 'RoadwayData':
@@ -80,33 +95,31 @@ class RoadwayData(Model):
         :param name: The name of this RoadwayData.
         :type name: str
         """
-        if name is None:
-            raise ValueError("Invalid value for `name`, must not be `None`")  # noqa: E501
 
         self._name = name
 
     @property
-    def type(self) -> str:
-        """Gets the type of this RoadwayData.
+    def roadtype(self) -> str:
+        """Gets the roadtype of this RoadwayData.
 
 
-        :return: The type of this RoadwayData.
+        :return: The roadtype of this RoadwayData.
         :rtype: str
         """
-        return self._type
+        return self._roadtype
 
-    @type.setter
-    def type(self, type: str):
-        """Sets the type of this RoadwayData.
+    @roadtype.setter
+    def roadtype(self, roadtype: str):
+        """Sets the roadtype of this RoadwayData.
 
 
-        :param type: The type of this RoadwayData.
-        :type type: str
+        :param roadtype: The roadtype of this RoadwayData.
+        :type roadtype: str
         """
-        if type is None:
-            raise ValueError("Invalid value for `type`, must not be `None`")  # noqa: E501
+        if roadtype is None:
+            raise ValueError("Invalid value for `roadtype`, must not be `None`")  # noqa: E501
 
-        self._type = type
+        self._roadtype = roadtype
 
     @property
     def latitude(self) -> float:
@@ -176,3 +189,72 @@ class RoadwayData(Model):
             raise ValueError("Invalid value for `distance`, must not be `None`")  # noqa: E501
 
         self._distance = distance
+
+    @property
+    def aadt(self) -> float:
+        """Gets the aadt of this RoadwayData.
+
+
+        :return: The aadt of this RoadwayData.
+        :rtype: float
+        """
+        return self._aadt
+
+    @aadt.setter
+    def aadt(self, aadt: float):
+        """Sets the aadt of this RoadwayData.
+
+
+        :param aadt: The aadt of this RoadwayData.
+        :type aadt: float
+        """
+        if aadt is None:
+            raise ValueError("Invalid value for `aadt`, must not be `None`")  # noqa: E501
+
+        self._aadt = aadt
+
+    @property
+    def speed(self) -> float:
+        """Gets the speed of this RoadwayData.
+
+
+        :return: The speed of this RoadwayData.
+        :rtype: float
+        """
+        return self._speed
+
+    @speed.setter
+    def speed(self, speed: float):
+        """Sets the speed of this RoadwayData.
+
+
+        :param speed: The speed of this RoadwayData.
+        :type speed: float
+        """
+        if speed is None:
+            raise ValueError("Invalid value for `speed`, must not be `None`")  # noqa: E501
+
+        self._speed = speed
+
+    @property
+    def through_lanes(self) -> float:
+        """Gets the through_lanes of this RoadwayData.
+
+
+        :return: The through_lanes of this RoadwayData.
+        :rtype: float
+        """
+        return self._through_lanes
+
+    @through_lanes.setter
+    def through_lanes(self, through_lanes: float):
+        """Sets the through_lanes of this RoadwayData.
+
+
+        :param through_lanes: The through_lanes of this RoadwayData.
+        :type through_lanes: float
+        """
+        if through_lanes is None:
+            raise ValueError("Invalid value for `through_lanes`, must not be `None`")  # noqa: E501
+
+        self._through_lanes = through_lanes

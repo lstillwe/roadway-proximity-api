@@ -12,7 +12,7 @@ info:
   license:
     name: "MIT"
     url: "http://opensource.org/licenses/MIT"
-host: "bdt-proximity.renci.org"
+host: "bdt-proximity.renci.org:8080"
 basePath: "/roadway_proximity_api/v1"
 schemes:
 - "https"
@@ -45,7 +45,7 @@ paths:
         description: "limit the search distance - provide number in meters"
         required: false
         type: "number"
-        default: 500
+        default: 500.0
         format: "double"
       responses:
         200:
@@ -59,36 +59,53 @@ definitions:
   RoadwayData:
     type: "object"
     required:
+    - "aadt"
     - "distance"
     - "latitude"
     - "longitude"
-    - "name"
-    - "type"
+    - "roadtype"
+    - "speed"
+    - "through_lanes"
     properties:
       name:
         type: "string"
-        example: "Main Street"
-      type:
+        example: "Route ID"
+      roadtype:
         type: "string"
-        example: "primary"
+        example: "Rural Restricted Access"
       latitude:
         type: "number"
         format: "double"
-        example: 37.2000000000000028421709430404007434844970703125
+        example: 37.2
       longitude:
         type: "number"
         format: "double"
-        example: -79.33400000000000318323145620524883270263671875
+        example: -79.334
       distance:
         type: "number"
         format: "double"
-        example: 251.000765000000001236912794411182403564453125
+        example: 251.000765
+      aadt:
+        type: "number"
+        format: "integer"
+        example: 5060.0
+      speed:
+        type: "number"
+        format: "integer"
+        example: 55.0
+      through_lanes:
+        type: "number"
+        format: "integer"
+        example: 4.0
     example:
-      distance: 251.000765000000001236912794411182403564453125
-      latitude: 37.2000000000000028421709430404007434844970703125
-      name: "Main Street"
-      type: "primary"
-      longitude: -79.33400000000000318323145620524883270263671875
+      through_lanes: 4.0
+      distance: 251.000765
+      latitude: 37.2
+      name: "Route ID"
+      roadtype: "Rural Restricted Access"
+      aadt: 5060.0
+      speed: 55.0
+      longitude: -79.334
 parameters:
   latitude:
     name: "latitude"
@@ -112,5 +129,5 @@ parameters:
     description: "limit the search distance - provide number in meters"
     required: false
     type: "number"
-    default: 500
+    default: 500.0
     format: "double"

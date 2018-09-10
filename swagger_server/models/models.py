@@ -2,7 +2,6 @@
 from sqlalchemy import ARRAY, Boolean, CheckConstraint, Column, Float, Integer, String, Table, Text, text
 from geoalchemy2.types import Geometry
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.dialects.postgresql import TEXT, DOUBLE_PRECISION
 
 Base = declarative_base()
 metadata = Base.metadata
@@ -30,6 +29,20 @@ t_geometry_columns = Table(
     Column('srid', Integer),
     Column('type', String(30))
 )
+
+
+class Hpms2016MajorRoad(Base):
+    __tablename__ = 'hpms2016_major_roads'
+
+    gid = Column(Integer, primary_key=True)
+    route_id = Column(String)
+    through_lanes = Column(Integer)
+    lane_width = Column(Integer)
+    aadt = Column(Integer)
+    fips = Column(String(5))
+    roadtype = Column(String(2))
+    speed = Column(Integer)
+    geom = Column(Geometry, index=True)
 
 
 t_raster_columns = Table(
