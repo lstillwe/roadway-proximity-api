@@ -32,5 +32,5 @@ six==1.11.0
 sqlacodegen==2.0.0
 sqlalchemy==1.2.9
 swagger-spec-validator==2.1.0
-urllib3==1.22
+urllib3==1.23
 Werkzeug==0.12.2
