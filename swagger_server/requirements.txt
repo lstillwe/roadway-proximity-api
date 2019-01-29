@@ -26,7 +26,7 @@ pyproj==1.9.5.1
 python_dateutil == 2.6.0
 pytz==2017.2
 PyYAML>=4.2b1
-requests==2.18.4
+requests>=2.20.0
 setuptools >= 21.0.0
 six==1.11.0
 sqlacodegen==2.0.0
