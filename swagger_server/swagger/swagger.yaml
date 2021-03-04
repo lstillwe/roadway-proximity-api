@@ -1,116 +1,155 @@
 ---
-swagger: "2.0"
+openapi: 3.0.1
 info:
-  description: "This API, given a decimal formatted latitude and longitude (assumed\
-    \ WGS84), |\nreturns the distance (in meters) to the nearest primary or secondary\
-    \ road\n"
-  version: "1.0.0"
-  title: "Roadway Proximity API"
+  title: Roadway Exposures API
+  description: |
+    This API returns the distance in meters from a location of interest to the nearest roadway.
+
+    Roadway data are derived from GIS shapefiles provided by the US Federal Highway Administration's Highway Performance Monitoring System (HPMS). See the HPMS Field Manual (https://www.fhwa.dot.gov/policyinformation/hpms/fieldmanual/) for detailed explanation of methods and fields.
+
+    Results are limited to major (or primary) roadway types, including interstates, principal arteries, minor arteries, and major collectors, in the United States.
+
+    Locations are expressed using WGS84 decimal format. WGS84 is the World Geodetic System for expressing latitude and longitude. For example, Raleigh, North Carolina is at latitude 35.7796 and longitude -78.6382.
+
+    In addition to distance, the API retrieves additional information, including the roadway type, the maximum speed limit, the annual average daily traffic (AADT), and the total number of lanes. See https://www.fhwa.dot.gov/policyinformation/travel_monitoring/pubs/aadt/ for information on how AADT is computed.
+
+    The following roadway types are supported:
+    * Off-Network
+    * Rural Restricted Access
+    * Rural Unrestricted Access
+    * Urban Restricted Access
+    * Urban Unrestricted Access
+
+    In some cases, roadway type, AADT, and speed are not available in the HPMS data set. In this case, data from the US Census Bureau TIGER (Topologically Integrated Geographic Encoding and Referencing) data set (available at census.gov) was used to obtain roadway type. Roadway segments without roadway type were dropped from the dataset; this amounted to approximately 5% of roadways, many of which had not yet been built. Missing AADT and speeds were populated using a variety of methods. First, a lookup table was built with county averages by roadway type and facility type and populated with values from segments that already had AADT and/or speed. Second, in cases in which the lookup table could not be used (e.g., ramps often didn’t match), speeds were assigned based on the function class of the roadway, state averages, or averages for a similar (but different) roadway type.
+
+    The API is currently restricted to calendar year 2016.
   contact:
-    name: "Lisa Stillwell"
-    email: "lisa@renci.org"
+    name: Lisa Stillwell
+    email: lisa@renci.org
   license:
-    name: "MIT"
-    url: "http://opensource.org/licenses/MIT"
-host: "bdt-proximity.renci.org"
-basePath: "/roadway_proximity_api/v1"
-schemes:
-- "https"
+    name: MIT
+    url: http://opensource.org/licenses/MIT
+  version: 1.0.0
+  x-translator:
+    component: KP
+    team:
+    - Exposures Provider
+servers:
+- url: https://bdt-proximity.renci.org:8080/roadway_proximity_api/v1
+- url: http://bdt-proximity.renci.org:8080/roadway_proximity_api/v1
+tags:
+- name: translator
 paths:
   /distance:
     get:
-      summary: "retrieves distance"
-      description: "By passing in the appropriate options, you can get the distance\
-        \ to the closest roadway\n"
-      operationId: "get_distance"
-      produces:
-      - "application/json"
+      summary: retrieves distance in meters
+      description: Get the distance to the nearest roadway in meters
+      operationId: get_distance
       parameters:
-      - name: "latitude"
-        in: "query"
-        description: "latitude of point from which to retrieve the closest distance\
-          \ to a roadway (decimal format - WGS84 assumed)"
+      - name: latitude
+        in: query
+        description: latitude of the location of interest using decimal format (WGS84
+          datum)
         required: true
-        type: "number"
-        format: "double"
-      - name: "longitude"
-        in: "query"
-        description: "longitude of point from which to retrieve the closest distance\
-          \ to a roadway (decimal format - WGS84 assumed)"
+        schema:
+          type: number
+          format: double
+      - name: longitude
+        in: query
+        description: longitude of the location of interest using decimal format (WGS84
+          datum)
         required: true
-        type: "number"
-        format: "double"
-      - name: "limit_distance"
-        in: "query"
-        description: "limit the search distance - provide number in meters"
-        required: false
-        type: "number"
-        default: 500
-        format: "double"
+        schema:
+          type: number
+          format: double
+      - name: limit_distance
+        in: query
+        description: the maximum search distance between the location of interest
+          and nearest road (meters)
+        schema:
+          type: number
+          format: double
+          default: 500.0
       responses:
         200:
-          description: "search results matching criteria"
-          schema:
-            $ref: "#/definitions/RoadwayData"
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoadwayData'
+        204:
+          description: No content returned - nearest roadway is >500 meters from specified
+            latitude/longitude
+          content: {}
         400:
-          description: "bad input parameter"
-      x-swagger-router-controller: "swagger_server.controllers.default_controller"
-definitions:
-  RoadwayData:
-    type: "object"
-    required:
-    - "distance"
-    - "latitude"
-    - "longitude"
-    - "name"
-    - "type"
-    properties:
-      name:
-        type: "string"
-        example: "Main Street"
-      type:
-        type: "string"
-        example: "primary"
-      latitude:
-        type: "number"
-        format: "double"
-        example: 37.2000000000000028421709430404007434844970703125
-      longitude:
-        type: "number"
-        format: "double"
-        example: -79.33400000000000318323145620524883270263671875
-      distance:
-        type: "number"
-        format: "double"
-        example: 251.000765000000001236912794411182403564453125
-    example:
-      distance: 251.000765000000001236912794411182403564453125
-      latitude: 37.2000000000000028421709430404007434844970703125
-      name: "Main Street"
-      type: "primary"
-      longitude: -79.33400000000000318323145620524883270263671875
-parameters:
-  latitude:
-    name: "latitude"
-    in: "query"
-    description: "latitude of point from which to retrieve the closest distance to\
-      \ a roadway (decimal format - WGS84 assumed)"
-    required: true
-    type: "number"
-    format: "double"
-  longitude:
-    name: "longitude"
-    in: "query"
-    description: "longitude of point from which to retrieve the closest distance to\
-      \ a roadway (decimal format - WGS84 assumed)"
-    required: true
-    type: "number"
-    format: "double"
-  limit_distance:
-    name: "limit_distance"
-    in: "query"
-    description: "limit the search distance - provide number in meters"
-    required: false
-    type: "number"
-    default: 500
-    format: "double"
+          description: Bad input parameter
+          content: {}
+        404:
+          description: No values found
+          content: {}
+        500:
+          description: Server error
+          content: {}
+      x-openapi-router-controller: swagger_server.controllers.default_controller
+components:
+  schemas:
+    RoadwayData:
+      required:
+      - aadt
+      - distance
+      - latitude
+      - longitude
+      - roadtype
+      - route_id
+      - speed
+      - through_lanes
+      type: object
+      properties:
+        route_id:
+          type: string
+          description: The Route ID of the nearest roadway as reported to the Highway
+            Performance Monitoring System
+          example: R-VA   SR00106NB
+        roadtype:
+          type: string
+          description: The roadway type of the nearest roadway
+          example: Rural Restricted Access
+        latitude:
+          type: number
+          description: latitude provided in the API call
+          format: double
+          example: 37.2
+        longitude:
+          type: number
+          description: longitude provided in the API call
+          format: double
+          example: -77.334
+        distance:
+          type: number
+          description: distance from the point of interest to the nearest roadway
+            (meters)
+          format: double
+          example: 0.2255368
+        aadt:
+          type: number
+          description: the Annual Average Daily Traffic on the nearest roadway
+          format: integer
+          example: 7354.0
+        speed:
+          type: number
+          description: speed limit of the nearest roadway
+          format: integer
+          example: 31.0
+        through_lanes:
+          type: number
+          format: integer
+          example: 4.0
+      example:
+        aadt: 7354
+        distance: 0.2255368
+        latitude: 37.2
+        longitude: -77.334
+        roadtype: Urban Unrestricted Access
+        route_id: R-VA   SR00106NB
+        speed: 31
+        through_lanes: 4
