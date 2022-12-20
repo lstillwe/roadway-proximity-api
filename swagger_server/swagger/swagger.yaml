@@ -35,10 +35,10 @@ info:
     team:
     - Exposures Provider
 servers:
-- url: https://bdt-proximity.renci.org:8080/roadway_proximity_api/v1
-- url: http://bdt-proximity.renci.org:8080/roadway_proximity_api/v1
+- url: https://bdt-proximity.renci.org/roadway_proximity_api/v1
+- url: http://bdt-proximity.renci.org/roadway_proximity_api/v1
 tags:
-- name: translator
+- name: metadata
 paths:
   /distance:
     get:
