@@ -18,7 +18,7 @@ itsdangerous==0.24
 Jinja2==2.11.3
 jsonschema==2.6.0
 MarkupSafe==1.0
-numpy==1.13.3
+numpy==1.22.0
 packaging==16.8
 psycopg2==2.7.5
 pyparsing==2.2.0
